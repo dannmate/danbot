@@ -60,7 +60,6 @@ async function GetMessage(msg_recv) {
               "!\nThis is Daniel.. I am a chat-bot for Daniel... aka the " + botnm + emoji.getEmojiForWord('robot') + "Before you can chat with me further I first must verify you! Please answer the following question: \n\n" +
               User.auth_msg;
               Users.updateOne({num: User.num}, {'$set': {'said_hi': 1}}, (err, updateitem) => {
-                console.log(updateitem)
               })
             resolve({msg_send: msg_to_send, media: ''});
           } else if (User.said_hi == 1 & User.is_auth == 0)  {
@@ -90,7 +89,6 @@ async function GetMessage(msg_recv) {
                     if (err) {
                       console.log('Error:', err);
                     } else if (response.statusCode !== 200) {
-                      console.log('Status:', response.statusCode);
                     } else {
                        resolve({msg_send: data.joke, media: ''})  
                     }
@@ -104,7 +102,6 @@ async function GetMessage(msg_recv) {
                     img_path = response.entries[Math.floor(Math.random() *response.entries.length)].path_display;
                     dbx.filesGetTemporaryLink({"path": img_path})
                     .then(function(response) {
-                      console.log(response.link);
                       resolve({msg_send: 'iz mem', media:  response.link})
                     })
                     .catch(function(error) {
@@ -129,7 +126,6 @@ async function GetMessage(msg_recv) {
                       resolve({msg_send: 'I love you too ' + User.name , media: ''});
                     }              
                 } else if (User.name == 'Ney ne' & Util.Contains(msg_recv.Body.toString().toUpperCase(), 'YOU NOSE')) {
-                  console.log(msg_recv);
                   resolve({msg_send: 'I love you too!' , media: ''});
                 } else if (Util.Contains(msg_recv.Body.toString().toUpperCase(), 'FAMILY MEM')) {
 
@@ -147,13 +143,13 @@ async function GetMessage(msg_recv) {
                           response.entries[
                             Math.floor(Math.random() * response.entries.length)
                           ];
-                        console.log(rndItem);
+                        //console.log(rndItem);
                         if (rndItem.type == "folder") {
                           folders = folders + " > " + rndItem.name;
                           return getFolders(rndItem.id);
                         } else if (rndItem.type == "file") {
-                          console.log(rndItem.name);
-                          console.log(folders);
+                          //console.log(rndItem.name);
+                          //console.log(folders);
                           trimFolders = folders.substring(3, folders.length);
 
                           return { id: rndItem.id, path: trimFolders };
@@ -165,12 +161,12 @@ async function GetMessage(msg_recv) {
                   }
 
                   getRandomItem(boxclient).then(item => {
-                    console.log(item.path);
+                    //console.log(item.path);
                     boxclient.files
                       .update(item.id, { shared_link: boxclient.accessLevels.OPEN })
                       .then(file => {
-                        console.log(file.shared_link.download_url);
-                        console.log(item.path);
+                        //console.log(file.shared_link.download_url);
+                        //console.log(item.path);
 
                         resolve({
                           media: file.shared_link.download_url,
@@ -179,10 +175,9 @@ async function GetMessage(msg_recv) {
                       });
                   });
                 } else if (Util.Contains(msg_recv.Body.toString().toUpperCase(), 'WEATHER') || Util.Contains(msg_recv.Body.toString().toUpperCase(), 'WEATHAH')) {
-                  //var strReplaceList = require("./ref/weather_str_replace").list;
                   var strReplaceList = require("../weather_str_replace.json").list;
                   var url = "https://api.darksky.net/forecast/ " + process.env["DARKSKY_API_KEY"] + "/49.282730,-123.120735";
-                  //resolve({msg_send: 'Here is da weather', media: ''});
+
                   request.get(
                     {
                       url: url,
@@ -202,8 +197,6 @@ async function GetMessage(msg_recv) {
                             summary = Util.ReplaceAll(summary, strReplaceList[i].from, strReplaceList[i].to);                        
                           }
                         }
-                        console.log(summary);
-                        console.log(data.hourly.summary);
                         resolve({msg_send: summary, media: ''});
 
                       }
@@ -225,48 +218,3 @@ async function GetMessage(msg_recv) {
 }
 
 
-// var jsonConfig = require("../box-config1.json");
-//             var sdk = BoxSDK.getPreconfiguredInstance(jsonConfig);
-
-//             var boxclient = sdk.getAppAuthClient("enterprise");
-
-//             function getRandomItem(cli) {
-//               let folders = "";
-
-//               const getFolders = offset =>
-//                 cli.folders.getItems(offset).then(response => {
-//                   rndItem =
-//                     response.entries[
-//                       Math.floor(Math.random() * response.entries.length)
-//                     ];
-//                   console.log(rndItem);
-//                   if (rndItem.type == "folder") {
-//                     folders = folders + " > " + rndItem.name;
-//                     return getFolders(rndItem.id);
-//                   } else if (rndItem.type == "file") {
-//                     console.log(rndItem.name);
-//                     console.log(folders);
-//                     trimFolders = folders.substring(3, folders.length);
-
-//                     return { id: rndItem.id, path: trimFolders };
-//                   }
-//                 });
-
-//               // start by starting at top folder
-//               return getFolders(668902937);
-//             }
-
-//             getRandomItem(boxclient).then(item => {
-//               console.log(item.path);
-//               boxclient.files
-//                 .update(item.id, { shared_link: boxclient.accessLevels.OPEN })
-//                 .then(file => {
-//                   console.log(file.shared_link.download_url);
-//                   console.log(item.path);
-
-//                   resolve({
-//                     media: file.shared_link.download_url,
-//                     msg: item.path
-//                   });
-//                 });
-//             });
