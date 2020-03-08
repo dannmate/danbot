@@ -134,33 +134,7 @@ async function GetMessage(msg_recv) {
 
                   var boxclient = sdk.getAppAuthClient("enterprise");
 
-                  function getRandomItem(cli) {
-                    let folders = "";
-
-                    const getFolders = offset =>
-                      cli.folders.getItems(offset).then(response => {
-                        rndItem =
-                          response.entries[
-                            Math.floor(Math.random() * response.entries.length)
-                          ];
-                        //console.log(rndItem);
-                        if (rndItem.type == "folder") {
-                          folders = folders + " > " + rndItem.name;
-                          return getFolders(rndItem.id);
-                        } else if (rndItem.type == "file") {
-                          //console.log(rndItem.name);
-                          //console.log(folders);
-                          trimFolders = folders.substring(3, folders.length);
-
-                          return { id: rndItem.id, path: trimFolders };
-                        }
-                      });
-
-                    // start by starting at top folder
-                    return getFolders(668902937);
-                  }
-
-                  getRandomItem(boxclient).then(item => {
+                  Util.GetRandomItem(boxclient).then(item => {
                     //console.log(item.path);
                     boxclient.files
                       .update(item.id, { shared_link: boxclient.accessLevels.OPEN })
@@ -177,7 +151,6 @@ async function GetMessage(msg_recv) {
                 } else if (Util.Contains(msg_recv.Body.toString().toUpperCase(), 'WEATHER') || Util.Contains(msg_recv.Body.toString().toUpperCase(), 'WEATHAH')) {
                   var strReplaceList = require("../weather_str_replace.json").list;
                   var url = "https://api.darksky.net/forecast/ " + process.env["DARKSKY_API_KEY"] + "/49.282730,-123.120735";
-
                   request.get(
                     {
                       url: url,
@@ -216,5 +189,4 @@ async function GetMessage(msg_recv) {
     );
   });
 }
-
 
