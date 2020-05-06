@@ -7,7 +7,6 @@
 * Tells a funny joke
 * Tells the current weather in Vancouver.
 * Personalized verification for each of my family
-* 
 
 ## Technical features
 * Hosted on serverless azure functions
