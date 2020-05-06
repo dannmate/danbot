@@ -1,5 +1,7 @@
 # danbot
 
+![danbot](https://i.imgur.com/psE75Da.png)
+
 ## Features
 * Gets a random family photo
 * Tells a funny joke
@@ -14,4 +16,4 @@
 * Uses Twilio webhooks to send and receive whatsapp messages.
 
 
-![danbot](https://i.imgur.com/psE75Da.png)
+
