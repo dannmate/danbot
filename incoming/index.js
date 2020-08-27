@@ -27,7 +27,8 @@ module.exports = async function(context, req) {
 
 async function GetMessage(msg_recv) {
   return new Promise((resolve, reject) => {
-    const url = "mongodb://dan:" + process.env["MONGO_PW"] + ".mlab.com:45087/danbotdb";
+    const url = process.env["MONGO_PW"];
+    
     var msg_to_send = '';
     mongo.connect(
       url,
